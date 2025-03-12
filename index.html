@@ -1,0 +1,33 @@
+document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value;
+    const vehicleNumber = document.getElementById('vehicleNumber').value;
+    const village = document.getElementById('village').value;
+    const dateTime = document.getElementById('dateTime').value;
+
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyJnjMjbIbdX8drOKaEYSZYH6qk_R-N0GIcxQBW2JIcIQXwIHvZu9rtHio1qN0v9RkS/exec'; // Replace with your Google Apps Script URL
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('vehicleNumber', vehicleNumber);
+    formData.append('village', village);
+    formData.append('dateTime', dateTime);
+
+    fetch(scriptURL, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if(response.ok){
+            document.getElementById('message').textContent = "Data successfully submitted.";
+            document.getElementById('dataForm').reset();
+        } else{
+            document.getElementById('message').textContent = "Submission failed. Please try again.";
+        }
+    })
+    .catch(error => {
+        console.error('Error!', error.message);
+        document.getElementById('message').textContent = "An error occurred. Please try again.";
+    });
+});
